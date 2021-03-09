@@ -12,8 +12,23 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.7.1</version>
+            <version>4.9</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-maven-plugin -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-maven-plugin</artifactId>
+            <version>4.9</version>
+        </dependency>
+
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.khubla.antlr/antlr4test-maven-plugin &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.khubla.antlr</groupId>-->
+<!--            <artifactId>antlr4test-maven-plugin</artifactId>-->
+<!--            <version>1.17</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -26,7 +41,15 @@
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.7.1</version>
+                <version>4.9</version>
+                <configuration>
+                    <sourceDirectory>${basedir}</sourceDirectory>
+                    <includes>
+                        <include>Solidity.g4</include>
+                    </includes>
+                    <visitor>true</visitor>
+                    <listener>true</listener>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -35,6 +58,26 @@
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.khubla.antlr</groupId>-->
+<!--                <artifactId>antlr4test-maven-plugin</artifactId>-->
+<!--                <version>1.17</version>-->
+<!--                <configuration>-->
+<!--                    <verbose>false</verbose>-->
+<!--                    <showTree>false</showTree>-->
+<!--                    <entryPoint>sourceUnit</entryPoint>-->
+<!--                    <grammarName>Solidity</grammarName>-->
+<!--                    <packageName>solidityCCD</packageName>-->
+<!--                    <exampleFiles>examples/</exampleFiles>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>test</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
