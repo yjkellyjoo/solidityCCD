@@ -48,7 +48,7 @@ public class SolidityCCD {
 //            System.out.println(functionDef.functionDescriptor().identifier());
 
 
-            // use lexer~~!
+            // run CCDs
             nicad.runNicad();
 
 
