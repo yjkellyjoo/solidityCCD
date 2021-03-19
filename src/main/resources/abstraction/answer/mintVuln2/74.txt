@@ -1,0 +1,10 @@
+function mintTokens(address _to, uint256 _amount) onlyOwner public {
+		require (!restrictedAddresses[_to]);
+		require (_amount != 0);
+		require (balances[_to] + _amount > balances[_to]);
+		require (mintingCap >= supply + _amount);
+		supply += _amount;
+		balances[_to] += _amount;
+		Mint(_to, _amount);
+		Transfer(0x0, _to, _amount);
+	}

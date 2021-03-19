@@ -1,0 +1,8 @@
+function mintToken(address to, uint256 amount) external returns (bool success) {
+        require(msg.sender == mintableAddress);
+        require(balances[this] >= amount);
+        balances[this] -= amount;
+        balances[to] += amount;
+        Transfer(this, to, amount);
+        return true;
+    }

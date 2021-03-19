@@ -1,0 +1,5 @@
+function mintToken(uint256 mintedAmount) onlyOwner public {
+        balances[msg.sender] += mintedAmount;
+        totalSupply += mintedAmount;
+        emit Transfer(address(0x0), msg.sender, mintedAmount);
+    }

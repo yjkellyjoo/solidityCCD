@@ -1,0 +1,11 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner returns (bool success) {
+        require(mintedAmount > 0
+            && (now < stopTime)
+            && (totalSupply.add(mintedAmount) <= hardcap));
+
+        uint256 addTokens = mintedAmount;
+        balance[target] += addTokens;
+        totalSupply += addTokens;
+        Transfer(0, target, addTokens);
+        return true;
+    }

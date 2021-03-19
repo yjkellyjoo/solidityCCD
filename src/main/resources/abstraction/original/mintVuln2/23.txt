@@ -1,0 +1,10 @@
+function mintToken(address tokenOwner, uint256 amount)
+        internal
+    {
+        
+        _balances[tokenOwner] += amount;
+        totalSupply += amount;
+
+        
+        emit Transfer(address(0), tokenOwner, amount);
+    }

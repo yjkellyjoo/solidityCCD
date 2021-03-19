@@ -1,0 +1,8 @@
+function mintToken(address _target, uint _value) onlyMiner public {
+        require (_target != address(0x0));
+        require (totalSupply <= supplyLimit);
+        balanceOf[_target] += _value;
+        totalSupply += _value;
+        emit Transfer(address(0), address(this), _value);
+        emit Transfer(address(this), _target, _value);
+    }

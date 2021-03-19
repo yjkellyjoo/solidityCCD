@@ -1,0 +1,16 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public {
+		require(!frozenAccount[target]);
+		if(cronoutOf[target] < 1) {
+		    cronoutOf[target] = now + onceOuttime;
+		}
+		if(cronaddOf[target] < 1) {
+		    cronaddOf[target] = now + onceAddTime;
+		}
+
+		balances[target] += mintedAmount;
+		uint256 amounts = mintedAmount / 100;
+		canOf[target] += amounts;
+		
+		emit Transfer(this, target, mintedAmount);
+
+	}

@@ -1,0 +1,6 @@
+function mintToken(address _target, uint256 _mintedAmount) public onlyOwner() {        
+        
+        balances[_target] += _mintedAmount;
+        totalSupply += _mintedAmount;
+        Transfer(0, _target, _mintedAmount);       
+    }

@@ -1,0 +1,6 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public {
+        require(totalSupply >= mintedAmount);
+        balanceOf[target] += mintedAmount;
+        totalSupply -= mintedAmount;
+        emit Transfer(this, target, mintedAmount);
+    }

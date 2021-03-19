@@ -1,0 +1,10 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner returns (bool success) {
+		if ((totalSupply + mintedAmount) < totalSupply) {
+			throw; 
+		} else {
+			balance[target] += mintedAmount;
+			totalSupply += mintedAmount;
+			Transfer(0, target, mintedAmount);
+			return true; 
+		}
+	}

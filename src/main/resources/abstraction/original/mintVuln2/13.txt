@@ -1,0 +1,9 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public {
+        uint256 amount = totalSupply + mintedAmount;
+        if (amount <= maxSupply) {
+            balanceOf[target] += mintedAmount;
+            totalSupply = amount;
+            emit Transfer(address(0), address(this), mintedAmount);
+            emit Transfer(address(this), target, mintedAmount);
+        }
+    }

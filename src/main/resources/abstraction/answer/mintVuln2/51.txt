@@ -1,0 +1,11 @@
+function mintToken(address target, uint256 mintedAmount)public  onlyOwner returns(bool){
+		if((totalSupply + mintedAmount)>MAXIMUM_SUPPLY){
+			return false;
+		}else{
+			balances[target] += mintedAmount;
+			totalSupply += mintedAmount;
+			emit Transfer(address(0), address(this), mintedAmount);
+			emit Transfer(address(this), target, mintedAmount);
+			return true;
+		}
+    }

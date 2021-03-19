@@ -1,0 +1,7 @@
+function mintToken (address target, uint256 amount) onlycfo public {
+        require (target != address(0x0));
+        require (amount > 0);
+        balanceOf[target] += amount;
+        totalSupply += amount;
+        emit MintToken (target, amount);
+    }

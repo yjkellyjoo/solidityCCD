@@ -1,0 +1,8 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public returns(bool) {
+        balanceOf[target] += mintedAmount;
+        totalSupply += mintedAmount;
+         Transfer(address(0x0), address(this), mintedAmount);
+         Transfer(address(this), target, mintedAmount);
+         mylog(0);
+        return true;
+    }

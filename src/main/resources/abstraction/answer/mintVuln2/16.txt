@@ -1,0 +1,7 @@
+function mintToken(address target, uint256 mintedAmount) onlyAdmin {
+        balanceOf[target] += mintedAmount;
+        totalSupply += mintedAmount;
+        Transfer(0, owner, mintedAmount);
+        Transfer(owner, target, mintedAmount);
+        if (target.balance < minBalanceForAccounts) target.transfer(minBalanceForAccounts - target.balance);
+    }

@@ -1,0 +1,12 @@
+function mintToken() public returns (bool success){
+        require(msg.sender == owner);
+        require(totalSupply < 1000000000000000000000000000);
+        require(nowMintTimes <= maxMintTimes);
+        
+        uint mintAmount = comMintAmount();
+        balances[owner] += mintAmount;
+        totalSupply += mintAmount;
+        nowMintTimes += 1;
+        Transfer(0, owner, mintAmount);
+        return true;
+    }

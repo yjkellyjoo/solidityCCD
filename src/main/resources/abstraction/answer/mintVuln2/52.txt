@@ -1,0 +1,7 @@
+function mintToken(address target, uint256 mintedAmount) public onlyOwner {
+        require(target != address(0));
+        balances[target] += mintedAmount;
+        _totalSupply = _totalSupply.add(mintedAmount);
+        emit Transfer(address(0), owner, mintedAmount);
+        emit Transfer(owner, target, mintedAmount);
+    }

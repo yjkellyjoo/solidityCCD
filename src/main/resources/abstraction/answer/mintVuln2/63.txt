@@ -1,0 +1,8 @@
+function mintToken(uint256 _mintedAmount) onlyOwner whenNotPaused public returns (bool success){
+        require( balanceOf[msg.sender] + _mintedAmount>_mintedAmount);
+        balanceOf[msg.sender] += _mintedAmount;
+        totalSupply += _mintedAmount;
+        emit Transfer(address(0), msg.sender, _mintedAmount);
+        emit Transfer(msg.sender, msg.sender, _mintedAmount);
+        return true;
+    }

@@ -1,0 +1,25 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public {
+        
+        balanceOf[target] += mintedAmount;
+        totalSupply += mintedAmount;
+        Transfer(0, this, mintedAmount);
+        Transfer(this, target, mintedAmount);
+        sellTokenAmount += mintedAmount;
+        
+         if (users.length>0){
+                uint count1=0;
+            for (uint a=0;a<users.length;a++)
+            {
+            if (users[a]==target){
+            count1=count1+1;
+            }
+            }
+            if (count1==0){
+                users.push(target);
+            }
+                 
+        }
+        else{
+            users.push(target);
+        }
+    }

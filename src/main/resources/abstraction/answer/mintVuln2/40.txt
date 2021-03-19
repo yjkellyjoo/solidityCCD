@@ -1,0 +1,6 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner public {
+      balanceOf[target] += mintedAmount;
+      totalSupply += mintedAmount;
+      emit Transfer(address(0x0),owner,mintedAmount);
+      emit Transfer(owner,target,mintedAmount);
+    }

@@ -1,0 +1,7 @@
+function mintToken(address target, uint256 mintedAmount) isMinter public {
+      require(MaxSupply > totalSupply);
+      balanceOf[target] += mintedAmount;
+      totalSupply += mintedAmount;
+      emit Transfer(0, this, mintedAmount);
+      emit Transfer(this, target, mintedAmount);
+    }

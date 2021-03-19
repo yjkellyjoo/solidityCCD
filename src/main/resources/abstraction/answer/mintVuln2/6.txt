@@ -1,0 +1,8 @@
+function mintToken(address target, uint256 mintedAmount) onlyOwner returns (bool success) {
+		require(mintedAmount > 0); 
+        uint256 addTokens = mintedAmount; 
+		balance[target] += addTokens;
+		totalSupply += addTokens;
+		Transfer(0, target, addTokens);
+		return true; 
+	}

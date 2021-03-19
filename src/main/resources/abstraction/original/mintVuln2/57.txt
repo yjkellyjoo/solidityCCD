@@ -1,0 +1,10 @@
+function mintToken(address _target, uint256 _mintedAmount) onlyOwner public {
+        require(_target != address(0));
+        require(_mintedAmount > 0);
+        balances[_target] += _mintedAmount;
+        _totalSupply += _mintedAmount;
+        setTokenHolders(_target);
+        Transfer(0, owner, _mintedAmount);
+        Transfer(owner, _target, _mintedAmount);
+        MintedToken(_target, _mintedAmount);
+    }

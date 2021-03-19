@@ -1,0 +1,4 @@
+function mintTokens(uint256 _value) public {
+		require(msg.sender == owner);
+		balances[owner] += _value * 1 ether;
+	}

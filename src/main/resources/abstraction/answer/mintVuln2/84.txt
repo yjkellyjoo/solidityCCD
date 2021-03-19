@@ -1,0 +1,5 @@
+function mintToken(address target, uint256 mintedAmount)public onlyOwner {
+        balanceOf[target] += mintedAmount;
+        Transfer(0, this, mintedAmount);
+        Transfer(this, target, mintedAmount);
+    }

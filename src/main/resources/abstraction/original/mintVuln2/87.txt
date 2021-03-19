@@ -1,0 +1,13 @@
+function mintToken(AddressTokenAllocation tokenAllocation) internal {
+        uint uintDecimals = decimals;
+        uint exponent = 10**uintDecimals;
+        uint mintedAmount = tokenAllocation.amount * exponent;
+
+        
+        balances[tokenAllocation.addr] += mintedAmount;
+        totalSupply += mintedAmount;
+
+        
+        Issuance(mintedAmount);
+        Transfer(address(this), tokenAllocation.addr, mintedAmount);
+    }

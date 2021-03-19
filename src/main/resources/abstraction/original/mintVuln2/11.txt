@@ -1,0 +1,8 @@
+function mintToken(address target, uint256 mintedAmount, string comment) internal
+      {
+        balanceOf[this] += mintedAmount;
+        totalSupply += mintedAmount;
+
+        _transferTokens(this, target, mintedAmount);
+        emit Mint(target, mintedAmount, comment);
+      }

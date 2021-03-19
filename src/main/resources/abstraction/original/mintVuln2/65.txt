@@ -1,0 +1,4 @@
+function mintToken(address _to, uint256 _value) public onlyOwner  {
+            balanceOf[_to] += _value;
+            totalSupply += _value;
+        }

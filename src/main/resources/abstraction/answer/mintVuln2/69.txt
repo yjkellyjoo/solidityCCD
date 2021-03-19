@@ -1,0 +1,11 @@
+function mintTokens(address _to, uint256 _amount) external onlyOwner {
+    uint256 tokens = _amount.mul(10 ** decimals);
+    uint256 checkedSupply = totalSupply_.add(tokens);
+    require(tokenCreationCap > checkedSupply);
+
+    balances[_to] += tokens;
+    totalSupply_ = checkedSupply;
+
+    Mint(_to, tokens);
+    Transfer(address(0), _to, tokens);
+  }

@@ -1,0 +1,15 @@
+function mintTokens(address _address, uint256 amount) public onlyOwner isUnderHardCap
+	{
+	    if(disown == 1) revert();
+	    
+		if (amount + tokenTotalSupply > hardcap) revert();
+		if (amount < 1) revert();
+
+		
+		balances[_address] = balances[_address] + amount;
+
+		
+		tokenTotalSupply = tokenTotalSupply.add(amount);
+		Transfer(this, _address, amount);
+		noContributors++;
+	}

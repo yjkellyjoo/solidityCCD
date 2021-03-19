@@ -1,0 +1,7 @@
+function mintToken(uint256 mintedAmount) {
+        require(msg.sender==owner);
+        balances[msg.sender] += mintedAmount;
+        balances[msg.sender] = safeAdd(balances[msg.sender], mintedAmount);
+        _totalSupply = safeAdd(_totalSupply, mintedAmount);
+        
+}

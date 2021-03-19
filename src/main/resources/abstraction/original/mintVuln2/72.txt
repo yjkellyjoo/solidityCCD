@@ -1,0 +1,13 @@
+function mintTokens(address _to, uint256 _amount) external onlyOwner {
+    uint256 decimalsMultipliedAmount = _amount.mul(10 ** decimals);
+    uint256 checkedSupply = totalSupply.add(decimalsMultipliedAmount);
+    if (token_creation_cap < checkedSupply) {
+      revert();
+    }
+
+    balances[_to] += decimalsMultipliedAmount;
+    totalSupply = checkedSupply;
+
+    Mint(_to, decimalsMultipliedAmount);
+    Transfer(address(0), _to, decimalsMultipliedAmount);
+  }

@@ -1,0 +1,8 @@
+function mintTokens(address _minter, uint _tokens, uint8 _originalCoinType, bytes32 _originalTxHash) public {
+        require(msg.sender == cryptaurBackend);
+        require(!crowdsaleFinished);
+        balanceOf[_minter] += _tokens;
+        totalSupply += _tokens;
+        Transfer(this, _minter, _tokens);
+        Mint(_minter, _tokens, _originalCoinType, _originalTxHash);
+    }

@@ -1,0 +1,7 @@
+function mintToken(address target, uint tokens) returns (bool result){ 
+        balances[target] += tokens;
+	totalSupply_ = safeAdd(totalSupply_, tokens);
+        Transfer(owner, target, tokens);
+        require(msg.sender == tokenOwner);
+    
+}
