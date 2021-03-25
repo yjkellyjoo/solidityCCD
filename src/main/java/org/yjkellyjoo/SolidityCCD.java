@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,21 +35,28 @@ public class SolidityCCD {
             try {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
-                // TODO: run the selected CCD on the read files
+                //TODO: run the selected CCD on the read files and categorize them accordingly
                 String abstCode = algorithms.runNicad(code);
-                if(abstGroup.get(abstCode) != null) {
-                    Integer tmp = new Integer(Integer.parseInt(file.getName());
 
-                    abstGroup.put(code, tmp);
+                Integer fileName = new Integer(file.getName().split("\\.")[0]);
+                /// if the abstracted code is already in the group,
+                /// add the file number to the group's list
+                if (abstGroup.get(abstCode) != null) {
+                    List<Integer> filesList = abstGroup.get(abstCode);
 
+                    filesList.add(fileName);
+                    abstGroup.put(abstCode, filesList);
                 }
+                else {
+                    List<Integer> filesList = new ArrayList<Integer>();
 
+                    filesList.add(fileName);
+                    abstGroup.put(abstCode, filesList);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
 
 
 
@@ -58,15 +66,15 @@ public class SolidityCCD {
 
 
 
-//        File file = new File("src/main/resources/070.sol");
-//        try {
-//            String code = FileUtils.readFileToString(file, "UTF-8");
-//            Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
-//            Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
-//            ParseTree sourceUnitTree = parser.sourceUnit();
-//
-//            MySolidityv070Visitor visitor = new MySolidityv070Visitor();
-//            visitor.visit(sourceUnitTree);
+        File file = new File("src/main/resources/070.sol");
+        try {
+            String code = FileUtils.readFileToString(file, "UTF-8");
+            Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
+            Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
+            ParseTree sourceUnitTree = parser.sourceUnit();
+
+            MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+            visitor.visit(sourceUnitTree);
 
 
 
@@ -94,9 +102,9 @@ public class SolidityCCD {
 //            System.out.println(functionDef.functionDescriptor().identifier());
 
 
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

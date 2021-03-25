@@ -8,23 +8,50 @@ import java.util.Map;
 
 public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Token> {
 
-    // store variables (there's only one global scope!)
-//    private Map<String, Token> memory = new HashMap<String, Token>();
+    // store variables
+    private Map<String, String> identifiers = new HashMap<String, String>();
+    private int count = 0;
 
-    @Override public Token visitSourceUnit(Solidityv070Parser.SourceUnitContext ctx) {
-        return visitChildren(ctx);
-    }
-
-//    @Override public Token visitFunctionDefinition(Solidityv070Parser.FunctionDefinitionContext ctx) {
-//
-//        String functionIdentifier = ctx.functionDescriptor().identifier().getText();
-//
-//        return memory.put(functionIdentifier, value);
+//    @Override public Token visitSourceUnit(Solidityv070Parser.SourceUnitContext ctx) {
+//        return visitChildren(ctx);
 //    }
 
-    @Override public Token visitFunctionDescriptor(Solidityv070Parser.FunctionDescriptorContext ctx) {
-        String functionIdentifier = ctx.identifier().getText();
+//    @Override public Token visitFunctionDefinition(Solidityv070Parser.FunctionDefinitionContext ctx) {
+//        Solidityv070Parser.BlockContext block = ctx.block();
+//
+//        return visitChildren(ctx);
+//    }
 
-        return new Token(functionIdentifier);
+//    @Override public Token visitFunctionDescriptor(Solidityv070Parser.FunctionDescriptorContext ctx) {
+//        String functionIdentifier = ctx.identifier().getText();
+//
+//        return new Token(functionIdentifier);
+//    }
+
+//    @Override public Token visitBlock(Solidityv070Parser.BlockContext ctx) {
+//
+//        return visitChildren(ctx);
+//    }
+
+
+    @Override public Token visitIdentifier(Solidityv070Parser.IdentifierContext ctx) {
+        try {
+            // TODO: edit below to handle identifiers
+//            System.out.println(ctx.Identifier().getText());
+
+            String identifier = ctx.Identifier().getText();
+
+//            if (identifiers.get(identifier) == null) {
+//                identifiers.put(identifier, "id_" + Integer.toString(count));
+//                count++;
+//            }
+
+            return new Token(identifier);
+        }
+        // TODO: ignore address type casting for now
+        catch (NullPointerException ignored){
+
+        }
+        return null;
     }
 }
