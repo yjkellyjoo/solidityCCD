@@ -37,7 +37,7 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Token> {
     @Override public Token visitIdentifier(Solidityv070Parser.IdentifierContext ctx) {
         try {
             // TODO: edit below to handle identifiers
-//            System.out.println(ctx.Identifier().getText());
+            System.out.println(ctx.Identifier().getText());
 
             String identifier = ctx.Identifier().getText();
 
@@ -48,8 +48,8 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Token> {
 
             return new Token(identifier);
         }
-        // TODO: ignore address type casting for now
-        catch (NullPointerException ignored){
+        // TODO: ignore <address type> casting for now
+        catch (NullPointerException ignored) {
 
         }
         return null;

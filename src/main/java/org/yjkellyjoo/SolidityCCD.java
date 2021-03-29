@@ -36,6 +36,7 @@ public class SolidityCCD {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
                 //TODO: run the selected CCD on the read files and categorize them accordingly
+                System.out.println(code);
                 String abstCode = algorithms.runNicad(code);
 
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
@@ -63,48 +64,6 @@ public class SolidityCCD {
         // TODO: triage into sub-folders in the corresponding CCD folder
 
 
-
-
-
-        File file = new File("src/main/resources/070.sol");
-        try {
-            String code = FileUtils.readFileToString(file, "UTF-8");
-            Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
-            Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
-            ParseTree sourceUnitTree = parser.sourceUnit();
-
-            MySolidityv070Visitor visitor = new MySolidityv070Visitor();
-            visitor.visit(sourceUnitTree);
-
-
-
-//            MySolidityv070Listener listener = new MySolidityv070Listener();
-
-//            ParseTreeWalker walker = new ParseTreeWalker();
-//            walker.walk(listener, sourceUnit);
-
-//            Token t = visitor.visitSourceUnit(parser.sourceUnit());
-//            visitor.visitFunctionDefinition(parser.functionDefinition());
-
-//            for (Token t : lexer.getAllTokens()){
-//                System.out.println(t.getLine() + " " + t.getType() + " " + t.getText());
-//            }
-//
-//            String ruleName = Solidityv070Parser.ruleNames[parser.getRuleIndex()];
-//
-//
-//            System.out.println();
-//            for (int i = 0; i < tree.getChildCount(); i++) {
-//                System.out.println(tree.getChild(i));
-//            }
-//
-//            Solidityv070Parser.FunctionDefinitionContext functionDef = parser.functionDefinition();
-//            System.out.println(functionDef.functionDescriptor().identifier());
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 }
