@@ -1,43 +1,41 @@
 package org.yjkellyjoo;
 
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.io.FileUtils;
 
 import org.yjkellyjoo.ccd.algorithms;
 import org.yjkellyjoo.utils.Constants;
-import org.yjkellyjoo.utils.FileUtil;
-import org.yjkellyjoo.parser.*;
-import org.yjkellyjoo.v070.*;
 
 
 public class SolidityCCD {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // TODO: choose which CCD to run
 
 
+        // TODO: choose vuln_level
 
+
+        SolidityCCD.run("nicad", 1);
+    }
+
+    private static void run(String algoName, int vulnLevel) {
         // read files from the original folder
         Map<String , List<Integer>> abstGroup = new HashMap<String, List<Integer>>();
+        String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
-        File files = new File(Constants.ORIGINAL_1_FOLDER);
-        for (File file : files.listFiles()) {
+        File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
+        for (File file : originalFiles.listFiles()) {
             try {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
-                //TODO: run the selected CCD on the read files and categorize them accordingly
-                System.out.println(code);
-                String abstCode = algorithms.runNicad(code);
+                //run the selected CCD on the read files and categorize them accordingly
+                String abstCode = algorithms.runAlgo(algoName, code);
 
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
                 /// if the abstracted code is already in the group,
@@ -59,11 +57,76 @@ public class SolidityCCD {
             }
         }
 
+        // triage into sub-folders in the corresponding CCD folder
+        int subFolderCount = 0;
 
+        Set<String> abstCodes = abstGroup.keySet();
+        for (String abstCode: abstCodes) {
+            List<Integer> files = abstGroup.get(abstCode);
+            File tmp = new File(originalFiles.getPath() + '/' + files.get(0) + ".txt");
+            String code = null;
+            try {
+                code = FileUtils.readFileToString(tmp, "UTF-8");
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        // TODO: triage into sub-folders in the corresponding CCD folder
+            String currFolder = SolidityCCD.getAlgoFolder(algoName, vulnLevelFolder);
+            File subFolder = new File(currFolder + subFolderCount);
+            subFolder.mkdirs();
 
+            for (int fileName : files) {
+                File file = new File(subFolder.getPath() + '/' + fileName + ".txt");
+                try {
+                    file.createNewFile();
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write(code);
+                    fileWriter.flush();
+                    fileWriter.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String fileName = "abstCode.txt";
+            File file = new File(currFolder + subFolderCount + '/' + fileName);
+            try {
+                file.createNewFile();
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(abstCode);
+                fileWriter.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            subFolderCount++;
+        }
 
 
     }
+
+    private static String getAlgoFolder(String algoName, String vulnLevelFolder) {
+        String currFolder = null;
+        switch (algoName) {
+            case "nicad":
+                currFolder = Constants.NICAD_FOLDER + vulnLevelFolder;
+                break;
+            case "ccfinder":
+                currFolder = Constants.CCFINDER_FOLDER + vulnLevelFolder;
+                break;
+            case "vuddy":
+                currFolder = Constants.VUDDY_FOLDER + vulnLevelFolder;
+                break;
+            case "sourcerercc":
+                currFolder = Constants.SOURCERERCC_FOLDER + vulnLevelFolder;
+                break;
+            default:
+                System.err.println("wrong algorithm name.");
+        }
+        return currFolder;
+    }
+
 }

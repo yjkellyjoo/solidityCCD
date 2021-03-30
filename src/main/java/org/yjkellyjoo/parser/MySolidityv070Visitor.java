@@ -1,26 +1,26 @@
 package org.yjkellyjoo.parser;
 
+import org.antlr.runtime.Token;
 import org.yjkellyjoo.v070.Solidityv070BaseVisitor;
 import org.yjkellyjoo.v070.Solidityv070Parser;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Token> {
+public class MySolidityv070Visitor extends Solidityv070BaseVisitor<List<String>> {
 
-    // store variables
-    private Map<String, String> identifiers = new HashMap<String, String>();
-    private int count = 0;
+    // store all identifiers
+    private List<String> identifiers = new ArrayList<String>();
 
 //    @Override public Token visitSourceUnit(Solidityv070Parser.SourceUnitContext ctx) {
 //        return visitChildren(ctx);
 //    }
 
-//    @Override public Token visitFunctionDefinition(Solidityv070Parser.FunctionDefinitionContext ctx) {
-//        Solidityv070Parser.BlockContext block = ctx.block();
-//
-//        return visitChildren(ctx);
-//    }
+    @Override public List<String> visitFunctionDefinition(Solidityv070Parser.FunctionDefinitionContext ctx) {
+        visitChildren(ctx);
+
+        return identifiers;
+    }
 
 //    @Override public Token visitFunctionDescriptor(Solidityv070Parser.FunctionDescriptorContext ctx) {
 //        String functionIdentifier = ctx.identifier().getText();
@@ -34,21 +34,15 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Token> {
 //    }
 
 
-    @Override public Token visitIdentifier(Solidityv070Parser.IdentifierContext ctx) {
+    @Override public List<String> visitIdentifier(Solidityv070Parser.IdentifierContext ctx) {
         try {
-            // TODO: edit below to handle identifiers
-            System.out.println(ctx.Identifier().getText());
-
+//            System.out.println(ctx.Identifier().getText());
             String identifier = ctx.Identifier().getText();
+            identifiers.add(identifier);
 
-//            if (identifiers.get(identifier) == null) {
-//                identifiers.put(identifier, "id_" + Integer.toString(count));
-//                count++;
-//            }
-
-            return new Token(identifier);
+            return visitChildren(ctx);
         }
-        // TODO: ignore <address type> casting for now
+        // TODO: handle <address type> casting; ignoring them for now
         catch (NullPointerException ignored) {
 
         }
