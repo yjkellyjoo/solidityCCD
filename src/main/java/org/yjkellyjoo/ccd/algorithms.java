@@ -11,46 +11,28 @@ import org.yjkellyjoo.v070.Solidityv070Parser;
 import java.util.*;
 
 public class algorithms {
-    public static String runAlgo(String algoName, String code) {
-        String abstCode = null;
-        switch (algoName) {
-            case "nicad":
-                abstCode = algorithms.runNicad(code);
-                break;
-            case "ccfinder":
-                abstCode = algorithms.runCCFinder(code);
-                break;
-            case "vuddy":
-                abstCode = algorithms.runVuddy(code);
-                break;
-            case "sourcerercc":
-                abstCode = algorithms.runSourcererCC(code);
-                break;
-            default:
-                System.err.println("wrong algorithm name.");
-        }
-        return abstCode;
-    }
-
-    private static String runSourcererCC(String code) {
+    public static String runSourcererCC(String code) {
+        // TODO
         String abstCode = code;
 
         return abstCode;
     }
 
-    private static String runVuddy(String code) {
+    public static String runVuddy(String code) {
+        // TODO
         String abstCode = code;
 
         return abstCode;
     }
 
-    private static String runCCFinder(String code) {
+    public static String runCCFinder(String code) {
+        // TODO
         String abstCode = code;
 
         return abstCode;
     }
 
-    private static String runNicad(String code) {
+    public static String runNicad(String code) {
         String abstCode = code;
 
         Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
@@ -63,7 +45,7 @@ public class algorithms {
 
         // abstract identifiers
         Iterator<String> idIterator = identifiers.iterator();
-        Map<String, String> abstIds = new HashMap<String, String>();
+        Map<String, String> abstIds = new HashMap<>();
         int count = 0;
 
         while(idIterator.hasNext()) {

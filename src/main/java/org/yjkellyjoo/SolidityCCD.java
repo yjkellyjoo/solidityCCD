@@ -15,31 +15,45 @@ import org.yjkellyjoo.utils.Constants;
 public class SolidityCCD {
 
     public static void main(String[] args) {
-        // TODO: choose which CCD to run
 
+        if (args.length == 0) {
+            SolidityCCD.run("nicad", 1);
+            SolidityCCD.run("nicad", 2);
+//            SolidityCCD.run("ccfinder", 1);
+//            SolidityCCD.run("ccfinder", 2);
+//            SolidityCCD.run("vuddy", 1);
+//            SolidityCCD.run("vuddy", 2);
+//            SolidityCCD.run("sourcerercc", 1);
+//            SolidityCCD.run("sourcerercc", 2);
+        }
 
-        // TODO: choose vuln_level
+        else {
+            SolidityCCD.run(args[0], Integer.parseInt(args[1]));
+        }
 
-
-        SolidityCCD.run("nicad", 1);
     }
 
     private static void run(String algoName, int vulnLevel) {
+        /* run abstraction algorithm */
         // read files from the original folder
-        Map<String , List<Integer>> abstGroup = new HashMap<String, List<Integer>>();
+        Map<String , List<Integer>> abstGroup = new HashMap<>();
         String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
         File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
+        if (originalFiles.listFiles() == null) {
+            System.err.println("original folder does not exist.. exiting program..");
+            System.exit(1);
+        }
         for (File file : originalFiles.listFiles()) {
             try {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
-                //run the selected CCD on the read files and categorize them accordingly
-                String abstCode = algorithms.runAlgo(algoName, code);
+                // run the selected CCD on the read files and categorize them accordingly
+                String abstCode = SolidityCCD.runAlgo(algoName, code);
 
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
-                /// if the abstracted code is already in the group,
-                /// add the file number to the group's list
+                // if the abstracted code is already in the group,
+                // add the file number to the group's list
                 if (abstGroup.get(abstCode) != null) {
                     List<Integer> filesList = abstGroup.get(abstCode);
 
@@ -47,7 +61,7 @@ public class SolidityCCD {
                     abstGroup.put(abstCode, filesList);
                 }
                 else {
-                    List<Integer> filesList = new ArrayList<Integer>();
+                    List<Integer> filesList = new ArrayList<>();
 
                     filesList.add(fileName);
                     abstGroup.put(abstCode, filesList);
@@ -57,9 +71,21 @@ public class SolidityCCD {
             }
         }
 
-        // triage into sub-folders in the corresponding CCD folder
-        int subFolderCount = 0;
 
+        /* triage into sub-folders in the corresponding CCD folder */
+        // if vulnLevelFolder exists, empty it first.
+        String currFolder = SolidityCCD.getAlgoFolder(algoName, vulnLevelFolder);
+        File f = new File(currFolder);
+        if (f.exists()) {
+            try {
+                FileUtils.cleanDirectory(f);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // write text files into according subgroup folders
+        int subFolderCount = 0;
         Set<String> abstCodes = abstGroup.keySet();
         for (String abstCode: abstCodes) {
             List<Integer> files = abstGroup.get(abstCode);
@@ -72,7 +98,6 @@ public class SolidityCCD {
                 e.printStackTrace();
             }
 
-            String currFolder = SolidityCCD.getAlgoFolder(algoName, vulnLevelFolder);
             File subFolder = new File(currFolder + subFolderCount);
             subFolder.mkdirs();
 
@@ -128,5 +153,27 @@ public class SolidityCCD {
         }
         return currFolder;
     }
+
+    private static String runAlgo(String algoName, String code) {
+        String abstCode = null;
+        switch (algoName) {
+            case "nicad":
+                abstCode = algorithms.runNicad(code);
+                break;
+            case "ccfinder":
+                abstCode = algorithms.runCCFinder(code);
+                break;
+            case "vuddy":
+                abstCode = algorithms.runVuddy(code);
+                break;
+            case "sourcerercc":
+                abstCode = algorithms.runSourcererCC(code);
+                break;
+            default:
+                System.err.println("wrong algorithm name.");
+        }
+        return abstCode;
+    }
+
 
 }
