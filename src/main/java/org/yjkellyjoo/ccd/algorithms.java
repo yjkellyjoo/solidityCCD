@@ -57,6 +57,8 @@ public class algorithms {
             abstCode = abstCode.replaceFirst(id, abstIds.get(id));
         }
 
+        // TODO: abstract whitespaces
+
         return abstCode;
     }
 }
