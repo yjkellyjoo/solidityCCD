@@ -5,10 +5,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.yjkellyjoo.parser.MySolidityv070Visitor;
+import org.yjkellyjoo.utils.Constants;
 import org.yjkellyjoo.v070.Solidityv070Lexer;
 import org.yjkellyjoo.v070.Solidityv070Parser;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class algorithms {
     public static String runSourcererCC(String code) {
@@ -19,11 +23,36 @@ public class algorithms {
     }
 
     public static String runVuddy(String code) {
-        // TODO
         String abstCode = code;
+
+        Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
+        Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
+        MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+
+        ParseTree functionDefTree = parser.functionDefinition();
+        Map<String, Set<String>> identifiers = visitor.visit(functionDefTree);
+
+        // abstract fparams
+        Set<String> fparamIds = identifiers.get(Constants.fparam);
+        for (String id : fparamIds) {
+//            System.out.println(id);
+            abstCode = abstCode.replaceAll(id, Constants.fparam);
+        }
+
+        // TODO: abstarct data types
+        Set<String> dtypes = identifiers.get(Constants.dtype);
+
+
+        // abstract lvar
+        Set<String> localVariables = identifiers.get(Constants.lvar);
+        for (String var : localVariables) {
+            // TODO: abstract local variables
+
+        }
 
         return abstCode;
     }
+
 
     public static String runCCFinder(String code) {
         // TODO
@@ -41,10 +70,10 @@ public class algorithms {
 
         // use visitor and find out all identifiers from the given code.
         ParseTree functionDefinitionTree = parser.functionDefinition();
-        List<String> identifiers = visitor.visit(functionDefinitionTree);
+        Map<String, Set<String>> identifiers = visitor.visit(functionDefinitionTree);
 
         // abstract identifiers
-        Iterator<String> idIterator = identifiers.iterator();
+        Iterator<String> idIterator = identifiers.get(Constants.ident).iterator();
         Map<String, String> abstIds = new HashMap<>();
         int count = 0;
 
@@ -54,10 +83,11 @@ public class algorithms {
                 abstIds.put(id, "id_" + count);
                 count++;
             }
-            abstCode = abstCode.replaceFirst(id, abstIds.get(id));
+            abstCode = abstCode.replaceAll(id, abstIds.get(id));
         }
 
-        // TODO: abstract whitespaces
+        // unify all whitespaces
+        abstCode = abstCode.replaceAll("\\s+", " ");
 
         return abstCode;
     }

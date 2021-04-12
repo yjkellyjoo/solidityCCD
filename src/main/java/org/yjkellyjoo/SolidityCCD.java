@@ -21,7 +21,7 @@ public class SolidityCCD {
             SolidityCCD.run("nicad", 2);
 //            SolidityCCD.run("ccfinder", 1);
 //            SolidityCCD.run("ccfinder", 2);
-//            SolidityCCD.run("vuddy", 1);
+            SolidityCCD.run("vuddy", 1);
 //            SolidityCCD.run("vuddy", 2);
 //            SolidityCCD.run("sourcerercc", 1);
 //            SolidityCCD.run("sourcerercc", 2);
