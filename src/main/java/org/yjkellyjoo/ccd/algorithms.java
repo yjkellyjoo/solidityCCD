@@ -4,10 +4,16 @@ package org.yjkellyjoo.ccd;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.yjkellyjoo.parser.MySolidityv070Visitor;
+
 import org.yjkellyjoo.utils.Constants;
-import org.yjkellyjoo.v070.Solidityv070Lexer;
-import org.yjkellyjoo.v070.Solidityv070Parser;
+
+//import org.yjkellyjoo.parser.MySolidityv070Visitor;
+//import org.yjkellyjoo.v070.Solidityv070Lexer;
+//import org.yjkellyjoo.v070.Solidityv070Parser;
+
+import org.yjkellyjoo.parser.MySolidityVisitor;
+import org.yjkellyjoo.SolidityLexer;
+import org.yjkellyjoo.SolidityParser;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,9 +31,12 @@ public class algorithms {
     public static String runVuddy(String code) {
         String abstCode = code;
 
-        Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
-        Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
-        MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+//        Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
+//        Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
+//        MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+        SolidityLexer lexer = new SolidityLexer(CharStreams.fromString(code));
+        SolidityParser parser = new SolidityParser(new CommonTokenStream(lexer));
+        MySolidityVisitor visitor = new MySolidityVisitor();
 
         ParseTree functionDefTree = parser.functionDefinition();
         Map<String, Set<String>> identifiers = visitor.visit(functionDefTree);
@@ -71,9 +80,12 @@ public class algorithms {
     public static String runNicad(String code) {
         String abstCode = code;
 
-        Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
-        Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
-        MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+//        Solidityv070Lexer lexer = new Solidityv070Lexer(CharStreams.fromString(code));
+//        Solidityv070Parser parser = new Solidityv070Parser(new CommonTokenStream(lexer));
+//        MySolidityv070Visitor visitor = new MySolidityv070Visitor();
+        SolidityLexer lexer = new SolidityLexer(CharStreams.fromString(code));
+        SolidityParser parser = new SolidityParser(new CommonTokenStream(lexer));
+        MySolidityVisitor visitor = new MySolidityVisitor();
 
         // use visitor and find out all identifiers from the given code.
         ParseTree functionDefinitionTree = parser.functionDefinition();

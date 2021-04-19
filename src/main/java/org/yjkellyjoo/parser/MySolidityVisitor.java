@@ -1,19 +1,18 @@
 package org.yjkellyjoo.parser;
 
 import org.yjkellyjoo.utils.Constants;
-import org.yjkellyjoo.v070.Solidityv070BaseVisitor;
-import org.yjkellyjoo.v070.Solidityv070Parser;
+import org.yjkellyjoo.SolidityBaseVisitor;
+import org.yjkellyjoo.SolidityParser;
 
 import java.util.*;
 
-public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, Set<String>>> {
+public class MySolidityVisitor extends SolidityBaseVisitor<Map<String, Set<String>>> {
 
     // store all identifiers
     private Map<String, Set<String>> resultMap = new HashMap<>();
     private Set<String> fparamIds = new LinkedHashSet<>();
     private Set<String> elementaryTypes = new LinkedHashSet<>();
     private Set<String> functionCalls = new LinkedHashSet<>();
-    private Set<String> lvars = new LinkedHashSet<>();
     private Set<String> identifiers = new LinkedHashSet<>();
 
 
@@ -24,7 +23,7 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
 //    }
 
 
-    @Override public Map<String, Set<String>> visitFunctionDefinition(Solidityv070Parser.FunctionDefinitionContext ctx) {
+    @Override public Map<String, Set<String>> visitFunctionDefinition(SolidityParser.FunctionDefinitionContext ctx) {
         visitChildren(ctx);
 
         // link every Sets into the identifier Map
@@ -37,10 +36,10 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
     }
 
 
-    @Override public Map<String, Set<String>> visitParameterList(Solidityv070Parser.ParameterListContext ctx) {
+    @Override public Map<String, Set<String>> visitParameterList(SolidityParser.ParameterListContext ctx) {
         // get parameter identifier names to abstract them as FPARAM
-        List<Solidityv070Parser.ParameterContext> params = ctx.parameter();
-        for (Solidityv070Parser.ParameterContext param : params) {
+        List<SolidityParser.ParameterContext> params = ctx.parameter();
+        for (SolidityParser.ParameterContext param : params) {
             try {
                 fparamIds.add(param.identifier().getText());
             }
@@ -51,7 +50,7 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
         return visitChildren(ctx);
     }
 
-    @Override public Map<String, Set<String>> visitFunctionCall(Solidityv070Parser.FunctionCallContext ctx) {
+    @Override public Map<String, Set<String>> visitFunctionCall(SolidityParser.FunctionCallContext ctx) {
         // get function call expressions to abstract them as FUNCCALL
         try {
 //            System.out.println(ctx.expression().getText());
@@ -63,7 +62,7 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
     }
 
 
-    @Override public Map<String, Set<String>> visitElementaryTypeName(Solidityv070Parser.ElementaryTypeNameContext ctx) {
+    @Override public Map<String, Set<String>> visitElementaryTypeName(SolidityParser.ElementaryTypeNameContext ctx) {
         // get all elementary types used in the investigating code to abstract them as DTYPE
         try {
             elementaryTypes.add(ctx.getText());
@@ -74,7 +73,7 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
     }
 
 
-    @Override public Map<String, Set<String>> visitIdentifier(Solidityv070Parser.IdentifierContext ctx) {
+    @Override public Map<String, Set<String>> visitIdentifier(SolidityParser.IdentifierContext ctx) {
         try {
             identifiers.add(ctx.Identifier().getText());
         }

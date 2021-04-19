@@ -17,8 +17,8 @@ public class SolidityCCD {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-//            SolidityCCD.run("nicad", 1);
-//            SolidityCCD.run("nicad", 2);
+            SolidityCCD.run("nicad", 1);
+            SolidityCCD.run("nicad", 2);
 //            SolidityCCD.run("ccfinder", 1);
 //            SolidityCCD.run("ccfinder", 2);
             SolidityCCD.run("vuddy", 1);
@@ -44,8 +44,10 @@ public class SolidityCCD {
             System.err.println("original folder does not exist.. exiting program..");
             System.exit(1);
         }
+
+        System.out.println("=== running " + algoName + " with vulnLevel " + vulnLevel);
         for (File file : originalFiles.listFiles()) {
-            System.out.println("=== working on " + file.getName());
+            System.out.println("-- working on " + file.getName());
             try {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
