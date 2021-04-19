@@ -35,19 +35,26 @@ public class algorithms {
         // abstract fparams
         Set<String> fparamIds = identifiers.get(Constants.fparam);
         for (String id : fparamIds) {
-//            System.out.println(id);
             abstCode = abstCode.replaceAll(id, Constants.fparam);
         }
 
-        // TODO: abstarct data types
+        // abstract data types
         Set<String> dtypes = identifiers.get(Constants.dtype);
+        for (String dtype : dtypes) {
+            abstCode = abstCode.replaceAll(dtype, Constants.dtype);
+        }
 
+        // abstract function calls
+        Set<String> funccalls = identifiers.get(Constants.funccall);
+        for (String funccall : funccalls) {
+//            System.out.println(funccall);
+            abstCode = abstCode.replaceAll(funccall, Constants.funccall);
+        }
 
         // abstract lvar
-        Set<String> localVariables = identifiers.get(Constants.lvar);
+        Set<String> localVariables = identifiers.get(Constants.ident);
         for (String var : localVariables) {
-            // TODO: abstract local variables
-
+            abstCode = abstCode.replaceAll(var, Constants.lvar);
         }
 
         return abstCode;
