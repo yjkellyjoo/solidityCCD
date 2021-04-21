@@ -54,6 +54,8 @@ public class SolidityCCD {
                 // run the selected CCD on the read files and categorize them accordingly
                 String abstCode = SolidityCCD.runAlgo(algoName, code);
 
+                //TODO: move the below code to algorithms.java; must use different comparison for each algo.
+                // abstGroup을 만들어서 리턴해주는 함수 하나 짜면 될듯.
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
                 // if the abstracted code is already in the group,
                 // add the file number to the group's list
@@ -171,6 +173,7 @@ public class SolidityCCD {
                 break;
             case "sourcerercc":
                 abstCode = algorithms.runSourcererCC(code);
+                // TODO: in case of SourcererCC, comparison method is different, so must end the algorithm here.
                 break;
             default:
                 System.err.println("wrong algorithm name.");

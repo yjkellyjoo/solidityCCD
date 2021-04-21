@@ -22,8 +22,14 @@ import java.util.Set;
 
 public class algorithms {
     public static String runSourcererCC(String code) {
-        // TODO
+        //TODO
+        // 1. tokenize code : remove separators and comments; the rest are tokens.
+        // 2. count the tokens and save the frequency of each code into bag of tokens.
+        // 3. return the bag of tokens.
+
         String abstCode = code;
+
+
 
         return abstCode;
     }
@@ -65,6 +71,8 @@ public class algorithms {
         for (String var : localVariables) {
             abstCode = abstCode.replaceAll(var, Constants.lvar);
         }
+
+        // TODO: normalize whitespaces + convert all characters into lowercase.
 
         return abstCode;
     }
