@@ -17,8 +17,8 @@ public class SolidityCCD {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-            SolidityCCD.run("nicad", 1);
-            SolidityCCD.run("nicad", 2);
+//            SolidityCCD.run("nicad", 1);
+//            SolidityCCD.run("nicad", 2);
 //            SolidityCCD.run("ccfinder", 1);
 //            SolidityCCD.run("ccfinder", 2);
             SolidityCCD.run("vuddy", 1);
@@ -36,7 +36,7 @@ public class SolidityCCD {
     private static void run(String algoName, int vulnLevel) {
         /* run abstraction algorithm */
         // read files from the original folder
-        Map<String , List<Integer>> abstGroup = new HashMap<>();
+        List<String> abstCodes = new ArrayList<>();
         String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
         File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
@@ -51,31 +51,16 @@ public class SolidityCCD {
             try {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
-                // run the selected CCD on the read files and categorize them accordingly
+                // run the selected CCD on the read files and get abstracted codes
                 String abstCode = SolidityCCD.runAlgo(algoName, code);
-
-                //TODO: move the below code to algorithms.java; must use different comparison for each algo.
-                // abstGroup을 만들어서 리턴해주는 함수 하나 짜면 될듯.
-                Integer fileName = new Integer(file.getName().split("\\.")[0]);
-                // if the abstracted code is already in the group,
-                // add the file number to the group's list
-                if (abstGroup.get(abstCode) != null) {
-                    List<Integer> filesList = abstGroup.get(abstCode);
-
-                    filesList.add(fileName);
-                    abstGroup.put(abstCode, filesList);
-                }
-                else {
-                    List<Integer> filesList = new ArrayList<>();
-
-                    filesList.add(fileName);
-                    abstGroup.put(abstCode, filesList);
-                }
+                abstCodes.add(abstCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        // categorize abstracted codes accordingly
+        Map<String , List<Integer>> abstGroup = algorithms.groupAbstract(abstCodes);
 
         /* triage into sub-folders in the corresponding CCD folder */
         // if vulnLevelFolder exists, empty it first.

@@ -15,12 +15,32 @@ import org.yjkellyjoo.parser.MySolidityVisitor;
 import org.yjkellyjoo.SolidityLexer;
 import org.yjkellyjoo.SolidityParser;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class algorithms {
+    public static Map<String , List<Integer>> groupAbstract(List<String> abstCodes) {
+        Map<String , List<Integer>> abstGroup = new HashMap<>();
+        // TODO: must use different comparison for each algo.
+
+//                Integer fileName = new Integer(file.getName().split("\\.")[0]);
+//                // if the abstracted code is already in the group,
+//                // add the file number to the group's list
+//                if (abstGroup.get(abstCode) != null) {
+//                    List<Integer> filesList = abstGroup.get(abstCode);
+//
+//                    filesList.add(fileName);
+//                    abstGroup.put(abstCode, filesList);
+//                }
+//                else {
+//                    List<Integer> filesList = new ArrayList<>();
+//
+//                    filesList.add(fileName);
+//                    abstGroup.put(abstCode, filesList);
+//                }
+
+        return abstGroup;
+    }
+
     public static String runSourcererCC(String code) {
         //TODO
         // 1. tokenize code : remove separators and comments; the rest are tokens.
@@ -72,7 +92,8 @@ public class algorithms {
             abstCode = abstCode.replaceAll(var, Constants.lvar);
         }
 
-        // TODO: normalize whitespaces + convert all characters into lowercase.
+        abstCode = abstCode.replaceAll("\\s+", " ");
+        abstCode = abstCode.toLowerCase(Locale.ROOT);
 
         return abstCode;
     }
