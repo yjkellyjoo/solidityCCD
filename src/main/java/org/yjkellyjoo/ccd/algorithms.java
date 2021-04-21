@@ -12,31 +12,45 @@ import org.yjkellyjoo.utils.Constants;
 //import org.yjkellyjoo.v070.Solidityv070Parser;
 
 import org.yjkellyjoo.parser.MySolidityVisitor;
-import org.yjkellyjoo.SolidityLexer;
-import org.yjkellyjoo.SolidityParser;
+import org.yjkellyjoo.universal.SolidityLexer;
+import org.yjkellyjoo.universal.SolidityParser;
 
 import java.util.*;
 
 public class algorithms {
-    public static Map<String , List<Integer>> groupAbstract(List<String> abstCodes) {
-        Map<String , List<Integer>> abstGroup = new HashMap<>();
+    public static Map<String , List<Integer>> groupAbstract(String algoName, Map<Integer, String> abstCodes) {
         // TODO: must use different comparison for each algo.
+        Map<String , List<Integer>> abstGroup = new HashMap<>();
 
-//                Integer fileName = new Integer(file.getName().split("\\.")[0]);
-//                // if the abstracted code is already in the group,
-//                // add the file number to the group's list
-//                if (abstGroup.get(abstCode) != null) {
-//                    List<Integer> filesList = abstGroup.get(abstCode);
-//
-//                    filesList.add(fileName);
-//                    abstGroup.put(abstCode, filesList);
-//                }
-//                else {
-//                    List<Integer> filesList = new ArrayList<>();
-//
-//                    filesList.add(fileName);
-//                    abstGroup.put(abstCode, filesList);
-//                }
+        switch (algoName) {
+            case "nicad":
+            case "vuddy":
+                for (Integer fileName : abstCodes.keySet()) {
+                    String abstCode = abstCodes.get(fileName);
+
+                    // if the abstracted code is already in the group,
+                    // add the file number to the group's list
+                    if (abstGroup.get(abstCode) != null) {
+                        List<Integer> filesList = abstGroup.get(abstCode);
+
+                        filesList.add(fileName);
+                        abstGroup.put(abstCode, filesList);
+                    }
+                    // else input a new group
+                    else {
+                        List<Integer> filesList = new ArrayList<>();
+
+                        filesList.add(fileName);
+                        abstGroup.put(abstCode, filesList);
+                    }
+                }
+                break;
+            case "sourcerercc":
+                // TODO
+
+                break;
+        }
+
 
         return abstGroup;
     }

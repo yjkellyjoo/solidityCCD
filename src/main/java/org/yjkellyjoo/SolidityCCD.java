@@ -17,8 +17,8 @@ public class SolidityCCD {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-//            SolidityCCD.run("nicad", 1);
-//            SolidityCCD.run("nicad", 2);
+            SolidityCCD.run("nicad", 1);
+            SolidityCCD.run("nicad", 2);
 //            SolidityCCD.run("ccfinder", 1);
 //            SolidityCCD.run("ccfinder", 2);
             SolidityCCD.run("vuddy", 1);
@@ -36,7 +36,7 @@ public class SolidityCCD {
     private static void run(String algoName, int vulnLevel) {
         /* run abstraction algorithm */
         // read files from the original folder
-        List<String> abstCodes = new ArrayList<>();
+        Map<Integer, String> abstCodesMap = new HashMap<>();
         String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
         File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
@@ -52,15 +52,16 @@ public class SolidityCCD {
                 String code = FileUtils.readFileToString(file, "UTF-8");
 
                 // run the selected CCD on the read files and get abstracted codes
+                Integer fileName = new Integer(file.getName().split("\\.")[0]);
                 String abstCode = SolidityCCD.runAlgo(algoName, code);
-                abstCodes.add(abstCode);
+                abstCodesMap.put(fileName, abstCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         // categorize abstracted codes accordingly
-        Map<String , List<Integer>> abstGroup = algorithms.groupAbstract(abstCodes);
+        Map<String , List<Integer>> abstGroup = algorithms.groupAbstract(algoName, abstCodesMap);
 
         /* triage into sub-folders in the corresponding CCD folder */
         // if vulnLevelFolder exists, empty it first.
@@ -76,8 +77,8 @@ public class SolidityCCD {
 
         // write text files into according subgroup folders
         int subFolderCount = 0;
-        Set<String> abstCodes = abstGroup.keySet();
-        for (String abstCode: abstCodes) {
+        Set<String> abstCodeSet = abstGroup.keySet();
+        for (String abstCode: abstCodeSet) {
             List<Integer> files = abstGroup.get(abstCode);
             File tmp = new File(originalFiles.getPath() + '/' + files.get(0) + ".txt");
             String code = null;

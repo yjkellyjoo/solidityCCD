@@ -1,8 +1,8 @@
 package org.yjkellyjoo.parser;
 
 import org.yjkellyjoo.utils.Constants;
-import org.yjkellyjoo.SolidityBaseVisitor;
-import org.yjkellyjoo.SolidityParser;
+import org.yjkellyjoo.universal.SolidityBaseVisitor;
+import org.yjkellyjoo.universal.SolidityParser;
 
 import java.util.*;
 
