@@ -8,11 +8,14 @@ import java.util.*;
 
 import org.apache.commons.io.FileUtils;
 
-import org.yjkellyjoo.ccd.algorithms;
+import org.yjkellyjoo.ccd.Algorithms;
 import org.yjkellyjoo.utils.Constants;
 
 
 public class SolidityCCD {
+
+    private static Algorithms algorithms = new Algorithms();
+    private static Constants constants = new Constants();
 
     public static void main(String[] args) {
 
@@ -39,7 +42,7 @@ public class SolidityCCD {
         Map<Integer, Object> abstCodesMap = new HashMap<>();
         String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
-        File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
+        File originalFiles = new File(constants.ORIGINAL_FOLDER + vulnLevelFolder);
         if (originalFiles.listFiles() == null) {
             System.err.println("original folder does not exist.. exiting program..");
             System.exit(1);
@@ -53,19 +56,15 @@ public class SolidityCCD {
 
                 // run the selected CCD on the read files and get abstracted codes
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
-                Object abstCode = SolidityCCD.runAlgo(algoName, code);
+                Object abstCode = algorithms.runAlgo(algoName, code);
                 abstCodesMap.put(fileName, abstCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        // categorize abstracted codes accordingly
-        Map<String , List<Integer>> abstGroup = algorithms.compareAbstCodes(algoName, abstCodesMap);
-
-        /* triage into sub-folders in the corresponding CCD folder */
         // if vulnLevelFolder exists, empty it first.
-        String currFolder = SolidityCCD.getAlgoFolder(algoName, vulnLevelFolder);
+        String currFolder = algorithms.getAlgoFolder(algoName, vulnLevelFolder);
         File f = new File(currFolder);
         if (f.exists()) {
             try {
@@ -74,8 +73,17 @@ public class SolidityCCD {
                 e.printStackTrace();
             }
         }
+        // categorize abstracted codes accordingly
+        Map<String , List<Integer>> abstGroup = algorithms.compareAbstCodes(algoName, abstCodesMap, currFolder);
 
+        /* triage into sub-folders in the corresponding CCD folder */
         // write text files into according subgroup folders
+        // skip below in case of SourcererCC
+        // TODO: reformulate below
+        if (abstGroup == null) {
+            return;
+        }
+
         int subFolderCount = 0;
         Set<String> abstCodeSet = abstGroup.keySet();
         for (String abstCode: abstCodeSet) {
@@ -117,54 +125,10 @@ public class SolidityCCD {
             catch (IOException e) {
                 e.printStackTrace();
             }
-
             subFolderCount++;
         }
-
-
     }
 
-    private static String getAlgoFolder(String algoName, String vulnLevelFolder) {
-        String currFolder = null;
-        switch (algoName) {
-            case "nicad":
-                currFolder = Constants.NICAD_FOLDER + vulnLevelFolder;
-                break;
-            case "ccfinder":
-                currFolder = Constants.CCFINDER_FOLDER + vulnLevelFolder;
-                break;
-            case "vuddy":
-                currFolder = Constants.VUDDY_FOLDER + vulnLevelFolder;
-                break;
-            case "sourcerercc":
-                currFolder = Constants.SOURCERERCC_FOLDER + vulnLevelFolder;
-                break;
-            default:
-                System.err.println("wrong algorithm name.");
-        }
-        return currFolder;
-    }
-
-    private static Object runAlgo(String algoName, String code) {
-        Object abstCode = null;
-        switch (algoName) {
-            case "nicad":
-                abstCode = algorithms.runNicad(code);
-                break;
-            case "ccfinder":
-                abstCode = algorithms.runCCFinder(code);
-                break;
-            case "vuddy":
-                abstCode = algorithms.runVuddy(code);
-                break;
-            case "sourcerercc":
-                abstCode = algorithms.runSourcererCC(code);
-                break;
-            default:
-                System.err.println("wrong algorithm name.");
-        }
-        return abstCode;
-    }
 
 
 }

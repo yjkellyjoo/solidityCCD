@@ -8,6 +8,8 @@ import java.util.*;
 
 public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, Set<String>>> {
 
+    private Constants constants = new Constants();
+
     // store all identifiers
     private Map<String, Set<String>> resultMap = new HashMap<>();
     private Set<String> fparamIds = new LinkedHashSet<>();
@@ -28,10 +30,10 @@ public class MySolidityv070Visitor extends Solidityv070BaseVisitor<Map<String, S
         visitChildren(ctx);
 
         // link every Sets into the identifier Map
-        resultMap.put(Constants.fparam, fparamIds);
-        resultMap.put(Constants.dtype, elementaryTypes);
-        resultMap.put(Constants.funccall, functionCalls);
-        resultMap.put(Constants.ident, identifiers);
+        resultMap.put(constants.fparam, fparamIds);
+        resultMap.put(constants.dtype, elementaryTypes);
+        resultMap.put(constants.funccall, functionCalls);
+        resultMap.put(constants.ident, identifiers);
 
         return resultMap;
     }
