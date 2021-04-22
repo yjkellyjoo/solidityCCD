@@ -17,14 +17,14 @@ public class SolidityCCD {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-            SolidityCCD.run("nicad", 1);
-            SolidityCCD.run("nicad", 2);
+//            SolidityCCD.run("nicad", 1);
+//            SolidityCCD.run("nicad", 2);
 //            SolidityCCD.run("ccfinder", 1);
 //            SolidityCCD.run("ccfinder", 2);
-            SolidityCCD.run("vuddy", 1);
-            SolidityCCD.run("vuddy", 2);
-//            SolidityCCD.run("sourcerercc", 1);
-//            SolidityCCD.run("sourcerercc", 2);
+//            SolidityCCD.run("vuddy", 1);
+//            SolidityCCD.run("vuddy", 2);
+            SolidityCCD.run("sourcerercc", 1);
+            SolidityCCD.run("sourcerercc", 2);
         }
 
         else {
@@ -36,7 +36,7 @@ public class SolidityCCD {
     private static void run(String algoName, int vulnLevel) {
         /* run abstraction algorithm */
         // read files from the original folder
-        Map<Integer, String> abstCodesMap = new HashMap<>();
+        Map<Integer, Object> abstCodesMap = new HashMap<>();
         String vulnLevelFolder = "mintVuln" + vulnLevel + "/";
 
         File originalFiles = new File(Constants.ORIGINAL_FOLDER + vulnLevelFolder);
@@ -53,7 +53,7 @@ public class SolidityCCD {
 
                 // run the selected CCD on the read files and get abstracted codes
                 Integer fileName = new Integer(file.getName().split("\\.")[0]);
-                String abstCode = SolidityCCD.runAlgo(algoName, code);
+                Object abstCode = SolidityCCD.runAlgo(algoName, code);
                 abstCodesMap.put(fileName, abstCode);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -61,7 +61,7 @@ public class SolidityCCD {
         }
 
         // categorize abstracted codes accordingly
-        Map<String , List<Integer>> abstGroup = algorithms.groupAbstract(algoName, abstCodesMap);
+        Map<String , List<Integer>> abstGroup = algorithms.compareAbstCodes(algoName, abstCodesMap);
 
         /* triage into sub-folders in the corresponding CCD folder */
         // if vulnLevelFolder exists, empty it first.
@@ -145,8 +145,8 @@ public class SolidityCCD {
         return currFolder;
     }
 
-    private static String runAlgo(String algoName, String code) {
-        String abstCode = null;
+    private static Object runAlgo(String algoName, String code) {
+        Object abstCode = null;
         switch (algoName) {
             case "nicad":
                 abstCode = algorithms.runNicad(code);
@@ -159,7 +159,6 @@ public class SolidityCCD {
                 break;
             case "sourcerercc":
                 abstCode = algorithms.runSourcererCC(code);
-                // TODO: in case of SourcererCC, comparison method is different, so must end the algorithm here.
                 break;
             default:
                 System.err.println("wrong algorithm name.");

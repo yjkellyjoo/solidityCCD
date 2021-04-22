@@ -16,9 +16,11 @@ import org.yjkellyjoo.universal.SolidityLexer;
 import org.yjkellyjoo.universal.SolidityParser;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class algorithms {
-    public static Map<String , List<Integer>> groupAbstract(String algoName, Map<Integer, String> abstCodes) {
+    public static Map<String , List<Integer>> compareAbstCodes(String algoName, Map<Integer, Object> abstCodes) {
         // TODO: must use different comparison for each algo.
         Map<String , List<Integer>> abstGroup = new HashMap<>();
 
@@ -26,7 +28,7 @@ public class algorithms {
             case "nicad":
             case "vuddy":
                 for (Integer fileName : abstCodes.keySet()) {
-                    String abstCode = abstCodes.get(fileName);
+                    String abstCode = abstCodes.get(fileName).toString();
 
                     // if the abstracted code is already in the group,
                     // add the file number to the group's list
@@ -48,6 +50,7 @@ public class algorithms {
             case "sourcerercc":
                 // TODO
 
+
                 break;
         }
 
@@ -55,17 +58,54 @@ public class algorithms {
         return abstGroup;
     }
 
-    public static String runSourcererCC(String code) {
-        //TODO
-        // 1. tokenize code : remove separators and comments; the rest are tokens.
-        // 2. count the tokens and save the frequency of each code into bag of tokens.
-        // 3. return the bag of tokens.
-
+    public static Map<String, Integer> runSourcererCC(String code) {
         String abstCode = code;
 
+        /* 1. tokenize code */
+        // remove comments
+        // TODO: Is there a way to remove comments using the parser?
+        String commentsPattern = "(//.*?$)|(/\\*.*?\\*/)";
+        String stringPattern = "(\".*?(?<!\\\\)\")";
+        Matcher commentMatcher = Pattern.compile(commentsPattern).matcher(code);
+        Matcher stringMatcher = Pattern.compile(stringPattern).matcher(code);
+        boolean stringFlag = stringMatcher.find();
 
+        while (commentMatcher.find()) {
+            while (commentMatcher.start() < stringMatcher.start()) {
+                stringFlag = stringMatcher.find();
+            }
+            // do not remove comment patterns inside a string pattern
+            if (stringFlag && commentMatcher.start() < stringMatcher.end()) {
+                stringFlag = stringMatcher.find();
+            }
+            else {
+                abstCode = abstCode.replaceFirst(commentMatcher.group(), "");
+            }
+        }
 
-        return abstCode;
+        // remove separators
+        String separators = ":|;|\\^|\\||~|<|>|=|\\{|\\}|\\[|\\]|\\(|\\)|,|-|\\+|!|\\*|\\/|%|&|\\?|\\.|\"|'|\\s+";
+        abstCode = abstCode.replaceAll(separators, " ");
+//        System.out.println(abstCode);
+
+        /* 2. count the tokens and save the frequency of each code into bag of tokens. */
+        String[] splitToken = abstCode.split("\\s+");
+        Map<String, Integer> tokens = new HashMap<>();
+
+        for (String token : splitToken) {
+            // if the token is already in the group, increase the frequency
+            if (tokens.get(token) != null) {
+                Integer frequency = tokens.get(token);
+
+                frequency++;
+                tokens.put(token, frequency);
+            } else {
+                tokens.put(token, 1);
+            }
+        }
+
+        /* 3. return the bag of tokens. */
+        return tokens;
     }
 
     public static String runVuddy(String code) {
