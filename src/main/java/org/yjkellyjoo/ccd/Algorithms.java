@@ -232,7 +232,7 @@ public class Algorithms {
 
                             int maxLength = Math.max(tokensA.size(), tokensB.size());
                             computedThreshold = (int) Math.ceil(this.THRESHOLD * maxLength / (10 * this.MUL_FACTOR));
-                            System.out.println(computedThreshold);
+//                            System.out.println(computedThreshold);
 
                             int count = 0;
                             for (String token : tokensA.keySet()) {
