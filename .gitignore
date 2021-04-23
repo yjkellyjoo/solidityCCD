@@ -1,0 +1,5 @@
+**/.idea
+
+src/main/resources/abstraction/*
+!src/main/resources/abstraction/original/
+target/*
